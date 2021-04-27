@@ -15,7 +15,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Doc\\": "vendor/src/doc"
+            "Doc\\": "src/doc"
         }
     }
 }
