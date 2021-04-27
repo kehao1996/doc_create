@@ -1,0 +1,21 @@
+{
+    "name": "kehao/doc_create",
+    "description": "php doc_create",
+    "type": "library",
+    "require": {
+        "php": ">=7"
+    },
+    "license": "Nginx",
+    "authors": [
+        {
+            "name": "kehao",
+            "email": "46619057@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Doc\\": "vendor/src/doc"
+        }
+    }
+}
