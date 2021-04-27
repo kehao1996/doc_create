@@ -1,3 +1,2 @@
-文档创建
-
-下载 composer install
+## Composer install
+composer require kehao/doc_create
