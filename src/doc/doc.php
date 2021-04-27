@@ -77,12 +77,21 @@ class Doc {
         if(empty($this->name)) throw new DocException("文件名为空");
         if(empty($this->target_dir)) throw new DocException("目标路径为空");
         if(empty($this->doc_idr)) throw new DocException("文档路径为空");
+        if(!is_dir($this->target_dir) && $this->return_status == 2) throw new DocException("目标目录不存在");
+
         $this->getDir();
         $this->getNotes();
         $class_formt = $this->createDoc();
         if($this->return_status == 1){ //返回结果
             return $class_formt;
         }elseif($this->return_status == 2){ //生成文档
+            $file_name = $this->target_dir  . md5($this->name) . '.json';
+            $status = file_put_contents($file_name,$class_formt);
+            if(!$status){
+                throw new DocException('创建失败,检测目标目录是否存在');
+            }
+
+            return $file_name ;
         }
     }
 
@@ -121,13 +130,15 @@ class Doc {
                         $namespace = trim(trim(trim($content,'namespace')),';') .'\\';
                         break;
                     }
-
                 }
             }
 
             $path_info['classname'] = $path_info['filename'];
             $path_info['namespace'] = $namespace;
-            self::$file_dir[md5($path_info['dirname'])][$path_info['namespace'] . $path_info['classname']] = $path_info;
+
+            if($path_info['extension'] == 'php'){
+                self::$file_dir[md5($path_info['dirname'])][$path_info['namespace'] . $path_info['classname']] = $path_info;
+            }
         }
 
         $this->loadClass();
@@ -147,7 +158,6 @@ class Doc {
                 }
             }
         }
-
         $this->getMethods();
     }
 
@@ -178,8 +188,8 @@ class Doc {
 
     //解析类获取注释
     private function getNotes(){
-        if(empty(self::$refs)) return $this->returnMsg(0,'ref is empty');
-        if(empty(self::$methods)) return $this->returnMsg(0,'methods is empty');
+        if(empty(self::$refs)) throw new DocException('ref is empty');
+        if(empty(self::$methods)) throw new DocException('methods is empty');
 
         foreach(self::$refs as $class_name =>  $ref){
             foreach(self::$methods[$class_name]['method'] as $method_k=>$method){
@@ -227,9 +237,9 @@ class Doc {
                         $class_format[$file_v['classname']]['child'] = $child;
                     }
                 }
-
             }
         }
+
         if(empty($class_format)){
             throw new DocException('解析失败,请检查程序');
         }else{

@@ -1,6 +1,6 @@
 <?php
 
-if(!method_exists('searchDir')){
+if(!function_exists('searchDir')){
     function searchDir($path, &$files)
     {
 
@@ -20,7 +20,7 @@ if(!method_exists('searchDir')){
 }
 
 //得到目录名
-if(!method_exists('getDir')){
+if(!function_exists('getDir')){
     function getDir($dir)
     {
         $files = array();
