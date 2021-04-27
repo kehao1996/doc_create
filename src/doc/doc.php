@@ -63,7 +63,6 @@ class Doc {
     ]; //可解析领域
 
 
-
     public function __construct($name = '',$target_dir = '',$doc_idr = '',$return_status = 1)
     {
         $this->name = $name;
@@ -141,7 +140,7 @@ class Doc {
                 foreach(self::$file_dir[$con_v['md5']] as $file_k => $file_v){
                     if(is_file($file_v['dirname'] . '/' . $file_v['basename'])){
                         $file_url = $file_v['dirname'] . '/' . $file_v['basename'];
-                        require_once ($file_url);
+                        require_once($file_url);
                     }else{
                         unset(self::$file_dir[$con_v['md5']]);
                     }
